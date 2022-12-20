@@ -6,21 +6,21 @@ jobs:
   build_no_cache:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - run: docker build . -t thing
   build_no_cache_buildkit:
     env:
       DOCKER_BUILDKIT: '1'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - run: docker build . -t thing
   build_with_docker_save_load:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - id: cache-docker
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: /tmp/docker-save
         key: docker-save-${{ hashFiles('Dockerfile') }}
@@ -32,9 +32,9 @@ jobs:
   build_with_local_registry:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - id: cache-docker
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: /tmp/docker-registry
           key: docker-registry-no-buildkit-${{ hashFiles('Dockerfile') }}
@@ -48,9 +48,9 @@ jobs:
       DOCKER_BUILDKIT: '1'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - id: cache-docker
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: /tmp/docker-registry
           key: docker-registry-buildkit-${{ hashFiles('Dockerfile') }}
@@ -61,7 +61,7 @@ jobs:
   build_with_gpr:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - run: echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u $GITHUB_ACTOR --password-stdin
       - run: docker pull docker.pkg.github.com/$GITHUB_REPOSITORY/build-cache-no-buildkit || true
       - run: docker build . -t thing --cache-from=docker.pkg.github.com/$GITHUB_REPOSITORY/build-cache-no-buildkit
