@@ -63,6 +63,16 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u $GITHUB_ACTOR --password-stdin
-      - run: docker pull docker.pkg.github.com/$GITHUB_REPOSITORY/build-cache-no-buildkit || true
-      - run: docker build . -t thing --cache-from=docker.pkg.github.com/$GITHUB_REPOSITORY/build-cache-no-buildkit
-      - run: docker tag thing docker.pkg.github.com/$GITHUB_REPOSITORY/build-cache-no-buildkit && docker push docker.pkg.github.com/$GITHUB_REPOSITORY/build-cache-no-buildkit || true
+      - run: docker pull docker.pkg.github.com/$GITHUB_REPOSITORY/build_with_gpr || true
+      - run: docker build . -t thing --cache-from=docker.pkg.github.com/$GITHUB_REPOSITORY/build_with_gpr
+      - run: docker tag thing docker.pkg.github.com/$GITHUB_REPOSITORY/build_with_gpr && docker push docker.pkg.github.com/$GITHUB_REPOSITORY/build_with_gpr || true
+  build_with_gpr_build_kit:
+    env:
+      DOCKER_BUILDKIT: '1'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u $GITHUB_ACTOR --password-stdin
+      - run: docker pull docker.pkg.github.com/$GITHUB_REPOSITORY/build_with_gpr_build_kit || true
+      - run: docker build . -t thing --cache-from=docker.pkg.github.com/$GITHUB_REPOSITORY/build_with_gpr_build_kit
+      - run: docker tag thing docker.pkg.github.com/$GITHUB_REPOSITORY/build_with_gpr_build_kit && docker push docker.pkg.github.com/$GITHUB_REPOSITORY/build_with_gpr_build_kit || true
